@@ -10,6 +10,7 @@ import grade_west from '@/components/grade_west'
 import player_details from '@/components/player_details'
 import game from '@/components/game'
 import game_details from '@/components/game_details'
+import legends from '@/components/legends'
 
 Vue.use(Router)
 
@@ -62,5 +63,9 @@ export default new Router({
 			name:'game_details',
 			component:game_details
 		}]
+	},{
+		path:'/legends',
+		name:'legends',
+		component:legends
 	}]
 })

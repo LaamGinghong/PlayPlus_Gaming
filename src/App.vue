@@ -38,8 +38,8 @@
 								</li>
 							</ul>
 						</li>
-						<li>
-							<a href="#">英雄榜</a>
+						<li v-on:click="legend_active" id="legends_btn">
+							<router-link v-bind:to="'/legends'">英雄榜</router-link>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
@@ -70,24 +70,30 @@
 				$('#team_btn').addClass('active');
 				$('#schedule_btn').removeClass('active');
 				$('#grade_btn').removeClass('active');
+				$('#legends_btn').removeClass('active');
 			},
 			schedule_active:function  () {
 				$('#team_btn').removeClass('active');
 				$('#schedule_btn').addClass('active');
 				$('#grade_btn').removeClass('active');
+				$('#legends_btn').removeClass('active');
 			},
 			grade_active:function  () {
 				$('#team_btn').removeClass('active');
 				$('#schedule_btn').removeClass('active');
 				$('#grade_btn').addClass('active');
+				$('#legends_btn').removeClass('active');
+			},
+			legend_active:function  () {
+				$('#team_btn').removeClass('active');
+				$('#schedule_btn').removeClass('active');
+				$('#grade_btn').removeClass('active');
+				$('#legends_btn').addClass('active');
 			}
 		}
 	}
 </script>
 
 <style>
-	* {
-		font-family: "微软雅黑";
-	}
-	
+@import url("assets/css/schedule.css");	
 </style>

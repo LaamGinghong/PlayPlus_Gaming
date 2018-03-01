@@ -3,15 +3,15 @@
 		<div id="game_list_bar" v-for="value in game1_details">
 			<div v-if="num(value.rg_gamenum)" class="row">
 				<ul>
-					<li class="col-md-4 text-center game_list_bar_detail game_list_bar_detail_click">第一局</li>
-					<li class="col-md-4 text-center game_list_bar_detail">第二局</li>
-					<li class="col-md-4 text-center game_list_bar_detail">第三局</li>
+					<li class="col-md-4 text-center game_list_bar_detail game_list_bar_detail_click" v-on:click="first" id="three_firstgame">第一局</li>
+					<li class="col-md-4 text-center game_list_bar_detail" v-on:click="second" id="three_secondgame">第二局</li>
+					<li class="col-md-4 text-center game_list_bar_detail" v-on:click="third" id="three_thirdgame">第三局</li>
 				</ul>
 			</div>
 			<div v-else class="row">
 				<ul>
-					<li class="col-md-6 text-center game_list_bar_detail game_list_bar_detail_click">第一局</li>
-					<li class="col-md-6 text-center game_list_bar_detail">第二局</li>
+					<li class="col-md-6 text-center game_list_bar_detail game_list_bar_detail_click" v-on:click="first" id="two_firstgame">第一局</li>
+					<li class="col-md-6 text-center game_list_bar_detail" v-on:click="second" id="two_secodgame">第二局</li>
 				</ul>
 			</div>
 		</div>
@@ -78,13 +78,7 @@
 					</li>
 				</ul>
 			</li>
-			<li class="row">
-				<ul class="col-md-12 game_details_button_list">
-					<li class="game_details_button_click game_details_button col-md-2 col-md-offset-4">赛后综述</li>
-					<li class="game_details_button col-md-2">数据统计</li>
-				</ul>
-			</li>
-			<li class="row">
+			<li class="row" id="game_details_nav">
 				<ul class="col-md-12 game_details_nav">
 					<li class="game_details_player col-md-1">选手</li>
 					<li class="game_details_legend col-md-1">英雄</li>
@@ -98,7 +92,7 @@
 					<li class="game_details_player col-md-1">选手</li>
 				</ul>
 			</li>
-			<li class="row" v-for="values in game1_details">
+			<li class="row" v-for="values in game1_details" id="game_details_result">
 				<ul class="col-md-12 game_details_nav">
 					<li class="col-md-1 text-center game_details_player_details game_details_playerid"><img v-bind:src="values.rg_team1_topplayer" width="60px" /><br />{{values.rg_team1}}{{values.rg_team1_top_id}}</li>
 					<li class="col-md-1 text-center game_details_player_details"><img v-bind:src="values.rg_team1_toppick" width="50px" class="game_details_playerpick" /></li>
@@ -160,6 +154,15 @@
 					<li class="col-md-1 text-center game_details_player_details game_details_playerid"><img v-bind:src="values.rg_team2_supportplayer" width="60px" /><br />{{values.rg_team2}}{{values.rg_team2_support_id}}</li>
 				</ul>
 			</li>
+			<li id="game_details_table" class="row">
+				<ul class="col-md-12 game_details_nav">
+					<li class="col-md-12" id="game_details_demage_table" style="height: 1000px;"></li>
+					<li class="col-md-6" id="game_details_team1_demage_percent_table" style="height: 400px;"></li>
+					<li class="col-md-6" id="game_details_team2_demage_percent_table" style="height: 400px;"></li>
+					<li class="col-md-6" id="game_details_team1_earn_percent_table" style="height: 400px;"></li>
+					<li class="col-md-6" id="game_details_team2_earn_percent_table" style="height: 400px;"></li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -186,10 +189,1412 @@
 				}
 			});
 		},
+		mounted: function() {
+			this.tableOne();
+		},
 		methods: {
 			num: function(num) {
 				if(num == 3) return true;
 				else return false;
+			},
+			first: function() {
+				let vm = this;
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game1?game1_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback3',
+					success: function(data) {
+						vm.game1_details = data.data;
+					}
+				});
+				$('#three_firstgame').addClass('game_list_bar_detail_click');
+				$('#three_secondgame').removeClass('game_list_bar_detail_click');
+				$('#three_thirdgame').removeClass('game_list_bar_detail_click');
+				$('#two_firstgame').addClass('game_list_bar_detail_click');
+				$('#two_secodgame').removeClass('game_list_bar_detail_click');
+				this.tableOne();
+			},
+			second: function() {
+				let vm = this;
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game2?game2_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback3',
+					success: function(data) {
+						vm.game1_details = data.data;
+					}
+				});
+				$('#three_firstgame').removeClass('game_list_bar_detail_click');
+				$('#three_secondgame').addClass('game_list_bar_detail_click');
+				$('#three_thirdgame').removeClass('game_list_bar_detail_click');
+				$('#two_firstgame').removeClass('game_list_bar_detail_click');
+				$('#two_secodgame').addClass('game_list_bar_detail_click')
+				this.tableTwo();
+			},
+			third: function() {
+				let vm = this;
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game3?game3_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback3',
+					success: function(data) {
+						vm.game1_details = data.data;
+					}
+				});
+				$('#three_firstgame').removeClass('game_list_bar_detail_click');
+				$('#three_secondgame').removeClass('game_list_bar_detail_click');
+				$('#three_thirdgame').addClass('game_list_bar_detail_click');
+				this.tableThree();
+			},
+			tableOne: function() {
+				let app = echarts.init(document.getElementById('game_details_demage_table'), 'dark');
+				app.setOption({
+					title: {
+						text: '赛后数据统计',
+						top: '3%'
+					},
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							type: 'shadow'
+						}
+					},
+					legend: {
+						data: ['对敌方英雄输出伤害', '承受伤害'],
+						top: '3%'
+					},
+					grid: {
+						left: '3%',
+						right: '4%',
+						top: '8%',
+						bottom: '5%',
+						containLabel: true,
+						height: '900px'
+					},
+					xAxis: {
+						type: 'value',
+						boundaryGap: [0, 0.001]
+					},
+					yAxis: {
+						type: 'category',
+						inverse: true,
+						data: []
+					},
+					series: [{
+							name: '对敌方英雄输出伤害',
+							type: 'bar',
+							data: []
+						},
+						{
+							name: '承受伤害',
+							type: 'bar',
+							data: []
+						}
+					]
+				});
+				let teamOnedemagepercent = echarts.init(document.getElementById("game_details_team1_demage_percent_table"), 'dark');
+				teamOnedemagepercent.setOption({
+					title: {
+						text: 'Team1伤害占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team1Top', 'Team1Jun', 'Team1Mid', 'Team1ADC', 'Team1Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '伤害占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				let teamTwodemagepercent = echarts.init(document.getElementById("game_details_team2_demage_percent_table"), 'dark');
+				teamTwodemagepercent.setOption({
+					title: {
+						text: 'Team2伤害占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team2Top', 'Team2Jun', 'Team2Mid', 'Team2ADC', 'Team2Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '伤害占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				let teamOneearnpercent = echarts.init(document.getElementById("game_details_team1_earn_percent_table"), 'dark');
+				teamOneearnpercent.setOption({
+					title: {
+						text: 'Team1经济占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team1Top', 'Team1Jun', 'Team1Mid', 'Team1ADC', 'Team1Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '经济占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				let teamTwoearnpercent = echarts.init(document.getElementById("game_details_team2_earn_percent_table"), 'dark');
+				teamTwoearnpercent.setOption({
+					title: {
+						text: 'Team2经济占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team2Top', 'Team2Jun', 'Team2Mid', 'Team2ADC', 'Team2Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '经济占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game1_members?game1_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback4',
+					success: function(data) {
+						var members = ['teamOneTop', 'teamOneJun', 'teamOneMid', 'teamOneADC', 'teamOneSup', 'teamTwoTop', 'teamTwoJun', 'teamTwoMid', 'teamTwoADC', 'teamTwoSup'];
+						var legends = data.data[0];
+						app.setOption({
+							yAxis: {
+								data: members,
+								axisLabel: {
+									formatter: function(value) {
+										return '{' + value + '| }\n{value|' + value + '}';
+									},
+									margin: 20,
+									interval: 0,
+									rich: {
+										value: {
+											lineHeight: 20,
+											align: 'center'
+										},
+										teamOneTop: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_toppick
+											}
+										},
+										teamOneJun: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_junglepick
+											}
+										},
+										teamOneMid: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_midpick
+											}
+										},
+										teamOneADC: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_ADCpick
+											}
+										},
+										teamOneSup: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_supportpick
+											}
+										},
+										teamTwoTop: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_toppick
+											}
+										},
+										teamTwoJun: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_junglepick
+											}
+										},
+										teamTwoMid: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_midpick
+											}
+										},
+										teamTwoADC: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_ADCpick
+											}
+										},
+										teamTwoSup: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_supportpick
+											}
+										}
+									}
+								}
+							}
+						})
+					}
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game1_demage?game1_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback5',
+					success: function(data) {
+						var demage = [];
+						for(var i in data.data[0]) {
+							demage.push(data.data[0][i]);
+							app.setOption({
+								series: [{
+									name: '对敌方英雄输出伤害',
+									type: 'bar',
+									data: demage
+								}]
+							});
+							teamOnedemagepercent.setOption({
+								series: [{
+									data: [{
+										value: demage[0],
+										name: 'Team1Top'
+									}, {
+										value: demage[1],
+										name: 'Team1Jun'
+									}, {
+										value: demage[2],
+										name: 'Team1Mid'
+									}, {
+										value: demage[3],
+										name: 'Team1ADC'
+									}, {
+										value: demage[4],
+										name: 'Team1Sup'
+									}]
+								}]
+							});
+							teamTwodemagepercent.setOption({
+								series: [{
+									data: [{
+										value: demage[5],
+										name: 'Team2Top'
+									}, {
+										value: demage[6],
+										name: 'Team2Jun'
+									}, {
+										value: demage[7],
+										name: 'Team2Mid'
+									}, {
+										value: demage[8],
+										name: 'Team2ADC'
+									}, {
+										value: demage[9],
+										name: 'Team2Sup'
+									}]
+								}]
+							})
+						}
+					}
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game1_DK?game1_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback6',
+					success: function(data) {
+						var DK = [];
+						for(let i in data.data[0]) {
+							DK.push(data.data[0][i]);
+							app.setOption({
+								series: [{
+									name: '承受伤害',
+									type: 'bar',
+									data: DK
+								}]
+							})
+						}
+					}
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game1_earn?game1_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback7',
+					success: function(data) {
+						var earn = [];
+						for(let i in data.data[0]) {
+							earn.push(data.data[0][i]);
+							teamOneearnpercent.setOption({
+								series: [{
+									data: [{
+										value: earn[0],
+										name: 'Team1Top'
+									}, {
+										value: earn[1],
+										name: 'Team1Jun'
+									}, {
+										value: earn[2],
+										name: 'Team1Mid'
+									}, {
+										value: earn[3],
+										name: 'Team1ADC'
+									}, {
+										value: earn[4],
+										name: 'Team1Sup'
+									}]
+								}]
+							});
+							teamTwoearnpercent.setOption({
+								series: [{
+									data: [{
+										value: earn[5],
+										name: 'Team2Top'
+									}, {
+										value: earn[6],
+										name: 'Team2Jun'
+									}, {
+										value: earn[7],
+										name: 'Team2Mid'
+									}, {
+										value: earn[8],
+										name: 'Team2ADC'
+									}, {
+										value: earn[9],
+										name: 'Team2Sup'
+									}]
+								}]
+							})
+						}
+					}
+				});
+			},
+			tableTwo: function() {
+				let app = echarts.init(document.getElementById('game_details_demage_table'), 'dark');
+				app.setOption({
+					title: {
+						text: '赛后数据统计',
+						top: '3%'
+					},
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							type: 'shadow'
+						}
+					},
+					legend: {
+						data: ['对敌方英雄输出伤害', '承受伤害'],
+						top: '3%'
+					},
+					grid: {
+						left: '3%',
+						right: '4%',
+						top: '8%',
+						bottom: '5%',
+						containLabel: true,
+						height: '900px'
+					},
+					xAxis: {
+						type: 'value',
+						boundaryGap: [0, 0.001]
+					},
+					yAxis: {
+						type: 'category',
+						inverse: true,
+						data: []
+					},
+					series: [{
+							name: '对敌方英雄输出伤害',
+							type: 'bar',
+							data: []
+						},
+						{
+							name: '承受伤害',
+							type: 'bar',
+							data: []
+						}
+					]
+				});
+				let teamOnedemagepercent = echarts.init(document.getElementById("game_details_team1_demage_percent_table"), 'dark');
+				teamOnedemagepercent.setOption({
+					title: {
+						text: 'Team1伤害占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team1Top', 'Team1Jun', 'Team1Mid', 'Team1ADC', 'Team1Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '伤害占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				let teamTwodemagepercent = echarts.init(document.getElementById("game_details_team2_demage_percent_table"), 'dark');
+				teamTwodemagepercent.setOption({
+					title: {
+						text: 'Team2伤害占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team2Top', 'Team2Jun', 'Team2Mid', 'Team2ADC', 'Team2Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '伤害占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				let teamOneearnpercent = echarts.init(document.getElementById("game_details_team1_earn_percent_table"), 'dark');
+				teamOneearnpercent.setOption({
+					title: {
+						text: 'Team1经济占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team1Top', 'Team1Jun', 'Team1Mid', 'Team1ADC', 'Team1Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '经济占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				let teamTwoearnpercent = echarts.init(document.getElementById("game_details_team2_earn_percent_table"), 'dark');
+				teamTwoearnpercent.setOption({
+					title: {
+						text: 'Team2经济占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team2Top', 'Team2Jun', 'Team2Mid', 'Team2ADC', 'Team2Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '经济占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game2_members?game2_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback4',
+					success: function(data) {
+						var members = ['teamOneTop', 'teamOneJun', 'teamOneMid', 'teamOneADC', 'teamOneSup', 'teamTwoTop', 'teamTwoJun', 'teamTwoMid', 'teamTwoADC', 'teamTwoSup'];
+						var legends = data.data[0];
+						app.setOption({
+							yAxis: {
+								data: members,
+								axisLabel: {
+									formatter: function(value) {
+										return '{' + value + '| }\n{value|' + value + '}';
+									},
+									margin: 20,
+									interval: 0,
+									rich: {
+										value: {
+											lineHeight: 20,
+											align: 'center'
+										},
+										teamOneTop: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_toppick
+											}
+										},
+										teamOneJun: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_junglepick
+											}
+										},
+										teamOneMid: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_midpick
+											}
+										},
+										teamOneADC: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_ADCpick
+											}
+										},
+										teamOneSup: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_supportpick
+											}
+										},
+										teamTwoTop: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_toppick
+											}
+										},
+										teamTwoJun: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_junglepick
+											}
+										},
+										teamTwoMid: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_midpick
+											}
+										},
+										teamTwoADC: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_ADCpick
+											}
+										},
+										teamTwoSup: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_supportpick
+											}
+										}
+									}
+								}
+							}
+						})
+					}
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game2_demage?game2_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback5',
+					success: function(data) {
+						var demage = [];
+						for(var i in data.data[0]) {
+							demage.push(data.data[0][i]);
+							app.setOption({
+								series: [{
+									name: '对敌方英雄输出伤害',
+									type: 'bar',
+									data: demage
+								}]
+							});
+							teamOnedemagepercent.setOption({
+								series: [{
+									data: [{
+										value: demage[0],
+										name: 'Team1Top'
+									}, {
+										value: demage[1],
+										name: 'Team1Jun'
+									}, {
+										value: demage[2],
+										name: 'Team1Mid'
+									}, {
+										value: demage[3],
+										name: 'Team1ADC'
+									}, {
+										value: demage[4],
+										name: 'Team1Sup'
+									}]
+								}]
+							});
+							teamTwodemagepercent.setOption({
+								series: [{
+									data: [{
+										value: demage[5],
+										name: 'Team2Top'
+									}, {
+										value: demage[6],
+										name: 'Team2Jun'
+									}, {
+										value: demage[7],
+										name: 'Team2Mid'
+									}, {
+										value: demage[8],
+										name: 'Team2ADC'
+									}, {
+										value: demage[9],
+										name: 'Team2Sup'
+									}]
+								}]
+							})
+						}
+					}
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game2_DK?game2_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback6',
+					success: function(data) {
+						var DK = [];
+						for(let i in data.data[0]) {
+							DK.push(data.data[0][i]);
+							app.setOption({
+								series: [{
+									name: '承受伤害',
+									type: 'bar',
+									data: DK
+								}]
+							})
+						}
+					}
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game2_earn?game2_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback7',
+					success: function(data) {
+						var earn = [];
+						for(let i in data.data[0]) {
+							earn.push(data.data[0][i]);
+							teamOneearnpercent.setOption({
+								series: [{
+									data: [{
+										value: earn[0],
+										name: 'Team1Top'
+									}, {
+										value: earn[1],
+										name: 'Team1Jun'
+									}, {
+										value: earn[2],
+										name: 'Team1Mid'
+									}, {
+										value: earn[3],
+										name: 'Team1ADC'
+									}, {
+										value: earn[4],
+										name: 'Team1Sup'
+									}]
+								}]
+							});
+							teamTwoearnpercent.setOption({
+								series: [{
+									data: [{
+										value: earn[5],
+										name: 'Team2Top'
+									}, {
+										value: earn[6],
+										name: 'Team2Jun'
+									}, {
+										value: earn[7],
+										name: 'Team2Mid'
+									}, {
+										value: earn[8],
+										name: 'Team2ADC'
+									}, {
+										value: earn[9],
+										name: 'Team2Sup'
+									}]
+								}]
+							})
+						}
+					}
+				});
+			},
+			tableThree: function() {
+				let app = echarts.init(document.getElementById('game_details_demage_table'), 'dark');
+				app.setOption({
+					title: {
+						text: '赛后数据统计',
+						top: '3%'
+					},
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							type: 'shadow'
+						}
+					},
+					legend: {
+						data: ['对敌方英雄输出伤害', '承受伤害'],
+						top: '3%'
+					},
+					grid: {
+						left: '3%',
+						right: '4%',
+						top: '8%',
+						bottom: '5%',
+						containLabel: true,
+						height: '900px'
+					},
+					xAxis: {
+						type: 'value',
+						boundaryGap: [0, 0.001]
+					},
+					yAxis: {
+						type: 'category',
+						inverse: true,
+						data: []
+					},
+					series: [{
+							name: '对敌方英雄输出伤害',
+							type: 'bar',
+							data: []
+						},
+						{
+							name: '承受伤害',
+							type: 'bar',
+							data: []
+						}
+					]
+				});
+				let teamOnedemagepercent = echarts.init(document.getElementById("game_details_team1_demage_percent_table"), 'dark');
+				teamOnedemagepercent.setOption({
+					title: {
+						text: 'Team1伤害占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team1Top', 'Team1Jun', 'Team1Mid', 'Team1ADC', 'Team1Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '伤害占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				let teamTwodemagepercent = echarts.init(document.getElementById("game_details_team2_demage_percent_table"), 'dark');
+				teamTwodemagepercent.setOption({
+					title: {
+						text: 'Team2伤害占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team2Top', 'Team2Jun', 'Team2Mid', 'Team2ADC', 'Team2Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '伤害占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				let teamOneearnpercent = echarts.init(document.getElementById("game_details_team1_earn_percent_table"), 'dark');
+				teamOneearnpercent.setOption({
+					title: {
+						text: 'Team1经济占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team1Top', 'Team1Jun', 'Team1Mid', 'Team1ADC', 'Team1Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '经济占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				let teamTwoearnpercent = echarts.init(document.getElementById("game_details_team2_earn_percent_table"), 'dark');
+				teamTwoearnpercent.setOption({
+					title: {
+						text: 'Team2经济占比'
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['Team2Top', 'Team2Jun', 'Team2Mid', 'Team2ADC', 'Team2Sup'],
+						top: '10%'
+					},
+					series: [{
+						name: '经济占比',
+						type: 'pie',
+						radius: ['40%', '60%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '24',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: []
+					}]
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game3_members?game3_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback4',
+					success: function(data) {
+						var members = ['teamOneTop', 'teamOneJun', 'teamOneMid', 'teamOneADC', 'teamOneSup', 'teamTwoTop', 'teamTwoJun', 'teamTwoMid', 'teamTwoADC', 'teamTwoSup'];
+						var legends = data.data[0];
+						app.setOption({
+							yAxis: {
+								data: members,
+								axisLabel: {
+									formatter: function(value) {
+										return '{' + value + '| }\n{value|' + value + '}';
+									},
+									margin: 20,
+									interval: 0,
+									rich: {
+										value: {
+											lineHeight: 20,
+											align: 'center'
+										},
+										teamOneTop: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_toppick
+											}
+										},
+										teamOneJun: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_junglepick
+											}
+										},
+										teamOneMid: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_midpick
+											}
+										},
+										teamOneADC: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_ADCpick
+											}
+										},
+										teamOneSup: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team1_supportpick
+											}
+										},
+										teamTwoTop: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_toppick
+											}
+										},
+										teamTwoJun: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_junglepick
+											}
+										},
+										teamTwoMid: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_midpick
+											}
+										},
+										teamTwoADC: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_ADCpick
+											}
+										},
+										teamTwoSup: {
+											height: 40,
+											align: 'center',
+											backgroundColor: {
+												image: legends.rg_team2_supportpick
+											}
+										}
+									}
+								}
+							}
+						})
+					}
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game3_demage?game3_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback5',
+					success: function(data) {
+						var demage = [];
+						for(var i in data.data[0]) {
+							demage.push(data.data[0][i]);
+							app.setOption({
+								series: [{
+									name: '对敌方英雄输出伤害',
+									type: 'bar',
+									data: demage
+								}]
+							});
+							teamOnedemagepercent.setOption({
+								series: [{
+									data: [{
+										value: demage[0],
+										name: 'Team1Top'
+									}, {
+										value: demage[1],
+										name: 'Team1Jun'
+									}, {
+										value: demage[2],
+										name: 'Team1Mid'
+									}, {
+										value: demage[3],
+										name: 'Team1ADC'
+									}, {
+										value: demage[4],
+										name: 'Team1Sup'
+									}]
+								}]
+							});
+							teamTwodemagepercent.setOption({
+								series: [{
+									data: [{
+										value: demage[5],
+										name: 'Team2Top'
+									}, {
+										value: demage[6],
+										name: 'Team2Jun'
+									}, {
+										value: demage[7],
+										name: 'Team2Mid'
+									}, {
+										value: demage[8],
+										name: 'Team2ADC'
+									}, {
+										value: demage[9],
+										name: 'Team2Sup'
+									}]
+								}]
+							})
+						}
+					}
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game3_DK?game3_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback6',
+					success: function(data) {
+						var DK = [];
+						for(let i in data.data[0]) {
+							DK.push(data.data[0][i]);
+							app.setOption({
+								series: [{
+									name: '承受伤害',
+									type: 'bar',
+									data: DK
+								}]
+							})
+						}
+					}
+				});
+				$.ajax({
+					type: "get",
+					url: "http://localhost:3000/game3_earn?game3_id=" + this.$route.params.num,
+					async: true,
+					dataType: 'jsonp',
+					jsonp: 'callback',
+					jsonpCallback: 'jsonpCallback7',
+					success: function(data) {
+						var earn = [];
+						for(let i in data.data[0]) {
+							earn.push(data.data[0][i]);
+							teamOneearnpercent.setOption({
+								series: [{
+									data: [{
+										value: earn[0],
+										name: 'Team1Top'
+									}, {
+										value: earn[1],
+										name: 'Team1Jun'
+									}, {
+										value: earn[2],
+										name: 'Team1Mid'
+									}, {
+										value: earn[3],
+										name: 'Team1ADC'
+									}, {
+										value: earn[4],
+										name: 'Team1Sup'
+									}]
+								}]
+							});
+							teamTwoearnpercent.setOption({
+								series: [{
+									data: [{
+										value: earn[5],
+										name: 'Team2Top'
+									}, {
+										value: earn[6],
+										name: 'Team2Jun'
+									}, {
+										value: earn[7],
+										name: 'Team2Mid'
+									}, {
+										value: earn[8],
+										name: 'Team2ADC'
+									}, {
+										value: earn[9],
+										name: 'Team2Sup'
+									}]
+								}]
+							})
+						}
+					}
+				});
 			}
 		}
 	}

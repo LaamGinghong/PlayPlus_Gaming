@@ -1,3 +1,7 @@
+* {
+	font-family: "微软雅黑";
+}
+
 a {
 	color: black;
 }
@@ -583,7 +587,6 @@ li {
 
 #game {
 	background: url(/static/data_bg.jpg);
-	height: 1576px;
 	width: 100%;
 }
 
@@ -681,6 +684,7 @@ li {
 	background: #323232;
 	border-top: 3px solid #CEA04A;
 	line-height: 64px;
+	cursor: pointer;
 }
 
 .game_list_bar_detail_click {
@@ -820,28 +824,6 @@ li {
 	border-bottom: 1px solid #505050;
 }
 
-.game_details_button {
-	float: left;
-	height: 47px;
-	line-height: 44px;
-	font-size: 18px;
-	border-radius: 25px;
-	color: #c49f58;
-	border: 3px solid #c49f58;
-	text-align: center;
-	transition: .2s;
-}
-
-.game_details_button:hover {
-	background: #c49f58;
-	color: #FFFFFF;
-}
-
-.game_details_button_click {
-	background: #c49f58;
-	color: #FFFFFF;
-}
-
 .game_details_nav {
 	background: #3c3c3c;
 	border-top: 1px solid #191919;
@@ -891,4 +873,49 @@ li {
 .game_details_playerkill,
 .game_details_playercs {
 	color: #cea04a !important;
+}
+
+.legends_border {
+	display: block;
+	height: 211px;
+	width: 156px;
+	background: url(/static/border.png) no-repeat;
+	position: absolute;
+	top: 4px;
+	left: 14px;
+}
+
+.legends_image_most {
+	border-radius: 50%;
+	margin-top: 28px;
+}
+
+.legends_most_summary {
+	font-size: 14px;
+	padding: 0;
+	color: #666666;
+	margin-top: 70px;
+	padding-left: 20px;
+	line-height: 30px;
+}
+
+.legends_most_percent {
+	font-size: 18px;
+	font-weight: bold;
+	color: #c49f58;
+}
+
+.legends_most {
+	font-size: 16px;
+	font-weight: bold;
+	color: #787878;
+	text-align: left;
+	height: 28px;
+	line-height: 28px;
+	padding-left: 60px;
+	margin-top: 40px;
+}
+
+#legends_most {
+	margin-top: 80px;
 }
