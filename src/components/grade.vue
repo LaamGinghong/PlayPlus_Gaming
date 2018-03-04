@@ -6,20 +6,20 @@
 					<p class="text-center h1" id="grade_title">LPL</p>
 				</div>
 				<router-link v-bind:to="'/grade/east'" v-on:click.native="grade_details_title_east">
-					<div class="col-md-6 box">
+					<div class="col-md-6 col-sm-6 col-xs-6 box">
 						<p class="text-center h4 grade_details_title_onclick grade_details_title" id="east">东部战队积分榜</p>
 					</div>
 				</router-link>
 				<router-link v-bind:to="'/grade/west'" v-on:click.native="grade_details_title_west">
-					<div class="col-md-6 box">
+					<div class="col-md-6 col-sm-6 col-xs-6 box">
 						<p class="text-center h4 grade_details_title" id="west">西部战队积分榜</p>
 					</div>
 				</router-link>
 				<ul>
-					<li class="col-md-2 text-center grade_details_smalltitle">排名</li>
-					<li class="col-md-4 text-center grade_details_smalltitle">战队</li>
-					<li class="col-md-4 text-center grade_details_smalltitle">胜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;负</li>
-					<li class="col-md-2 text-center grade_details_smalltitle">积分</li>
+					<li class="col-md-2 col-xs-2 col-sm-2 text-center grade_details_smalltitle">排名</li>
+					<li class="col-md-4 col-xs-4 col-sm-4 text-center grade_details_smalltitle">战队</li>
+					<li class="col-md-4 col-xs-4 col-sm-4 text-center grade_details_smalltitle">胜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;负</li>
+					<li class="col-md-2 col-xs-2 col-sm-2 text-center grade_details_smalltitle">积分</li>
 				</ul>
 				<router-view/>
 			</div>

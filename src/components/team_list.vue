@@ -1,17 +1,17 @@
 <template>
-	<div id="team">
+	<div id="team_list">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-12 col-sm-12 col-xs-12">
 					<p class="text-center h1" id="teamlist_title">LPL</p>
 				</div>
 				<ul id="teamlist">
 					<li v-for="value in message">
 						<ul>
-							<router-link v-bind:to="'/team/'+value.l_id">
+							<router-link v-bind:to="'/team_list/'+value.l_id">
 								<li class="teamlist_logo"><img v-bind:src="value.l_logo" width="130px" height="130px" /></li>
 							</router-link>
-							<router-link v-bind:to="'/team/'+value.l_id">
+							<router-link v-bind:to="'/team_list/'+value.l_id">
 								<li class="teamlist_name">{{value.l_shortname}}</li>
 							</router-link>
 						</ul>
@@ -24,7 +24,7 @@
 
 <script>
 	export default {
-		name: 'team',
+		name: 'team_list',
 		data() {
 			return {
 				message: []

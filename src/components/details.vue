@@ -26,6 +26,19 @@
 				</ul>
 			</li>
 		</ul>
+		<ul id="schedule_details_mobile">
+			<li v-for="value in msg" class="details_mobile">
+				<ul class="row">
+					<li class="col-xs-12 col-sm-12 details_time_mobile">
+						<span class="col-xs-6 col-sm-6 text-center">{{value.s_time}}</span>
+						<span class="col-xs-6 col-sm-6 text-center">{{value.s_name}}{{value.s_stage}}</span>
+					</li>
+					<li class="col-xs-4 col-sm-4 text-center details_logo_mobile"><img v-bind:src="value.s_team1logo" width="40px"/><br />{{value.s_team1}}</li>
+					<li class="col-xs-4 col-sm-4 text-center details_result_mobile">{{value.s_team1win}}:{{value.s_team2win}}</li>
+					<li class="col-xs-4 col-sm-4 text-center details_logo_mobile"><img v-bind:src="value.s_team2logo" width="40px"/><br />{{value.s_team2}}</li>
+				</ul>
+			</li>
+		</ul>
 	</div>
 </template>
 
