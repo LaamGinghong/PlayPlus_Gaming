@@ -35,12 +35,14 @@ import team_earn from '@/components/team_earn'
 import team_dragon from '@/components/team_dragon'
 import team_baron from '@/components/team_baron'
 
-
 Vue.use(Router)
 
 export default new Router({
-	mode: 'history',
 	routes: [{
+		path: '/',
+		name: 'team_list',
+		component: team_list
+	}, {
 		path: '/schedule',
 		name: 'schedule',
 		component: schedule,
@@ -51,10 +53,6 @@ export default new Router({
 		}]
 	}, {
 		path: '/team_list',
-		name: 'team_list',
-		component: team_list
-	}, {
-		path: '/',
 		name: 'team_list',
 		component: team_list
 	}, {
@@ -82,109 +80,109 @@ export default new Router({
 		path: '/game/:id',
 		name: 'game',
 		component: game,
-		children:[{
-			path:'/game/:id/:num',
-			name:'game_details',
-			component:game_details
+		children: [{
+			path: '/game/:id/:num',
+			name: 'game_details',
+			component: game_details
 		}]
-	},{
-		path:'/legends',
-		name:'legends',
-		component:legends,
-		children:[{
-			path:'/legends/pick',
-			name:'legends_pick',
-			component:legends_pick
-		},{
-			path:'/legends/ban',
-			name:'legends_ban',
-			component:legends_ban
-		},{
-			path:'/legends/win',
-			name:'legends_win',
-			component:legends_win
+	}, {
+		path: '/legends',
+		name: 'legends',
+		component: legends,
+		children: [{
+			path: '/legends/pick',
+			name: 'legends_pick',
+			component: legends_pick
+		}, {
+			path: '/legends/ban',
+			name: 'legends_ban',
+			component: legends_ban
+		}, {
+			path: '/legends/win',
+			name: 'legends_win',
+			component: legends_win
 		}]
-	},{
-		path:'/player',
-		name:'player',
-		component:player,
-		children:[{
-			path:'/player/kill',
-			name:'player_kill',
-			component:player_kill
-		},{
-			path:'/player/death',
-			name:'player_death',
-			component:player_death
-		},{
-			path:'/player/assist',
-			name:'player_assist',
-			component:player_assist
-		},{
-			path:'/player/kda',
-			name:'player_kda',
-			component:player_kda
-		},{
-			path:'/player/mvp',
-			name:'player_mvp',
-			component:player_mvp
-		},{
-			path:'/player/stage',
-			name:'player_stage',
-			component:player_stage
-		},{
-			path:'/player/earn',
-			name:'player_earn',
-			component:player_earn
-		},{
-			path:'/player/CS',
-			name:'player_earn',
-			component:player_CS
-		},{
-			path:'/player/eyes',
-			name:'player_eyes',
-			component:player_eyes
-		},{
-			path:'/player/killeyes',
-			name:'player_killeyes',
-			component:player_killeyes
+	}, {
+		path: '/player',
+		name: 'player',
+		component: player,
+		children: [{
+			path: '/player/kill',
+			name: 'player_kill',
+			component: player_kill
+		}, {
+			path: '/player/death',
+			name: 'player_death',
+			component: player_death
+		}, {
+			path: '/player/assist',
+			name: 'player_assist',
+			component: player_assist
+		}, {
+			path: '/player/kda',
+			name: 'player_kda',
+			component: player_kda
+		}, {
+			path: '/player/mvp',
+			name: 'player_mvp',
+			component: player_mvp
+		}, {
+			path: '/player/stage',
+			name: 'player_stage',
+			component: player_stage
+		}, {
+			path: '/player/earn',
+			name: 'player_earn',
+			component: player_earn
+		}, {
+			path: '/player/CS',
+			name: 'player_earn',
+			component: player_CS
+		}, {
+			path: '/player/eyes',
+			name: 'player_eyes',
+			component: player_eyes
+		}, {
+			path: '/player/killeyes',
+			name: 'player_killeyes',
+			component: player_killeyes
 		}]
-	},{
-		path:'/team',
-		name:'team',
-		component:team,
-		children:[{
-			path:'/team/win',
-			name:'team_win',
-			component:team_win
-		},{
-			path:'/team/kill',
-			name:'team_kill',
-			component:team_kill
-		},{
-			path:'/team/death',
-			name:'team_death',
-			component:team_death
-		},{
-			path:'/team/eyes',
-			name:'team_eyes',
-			component:team_eyes
-		},{
-			path:'/team/killeyes',
-			name:'team_killeyes',
-			component:team_killeyes
-		},{
-			path:'/team/earn',
-			name:'team_earn',
-			component:team_earn
-		},{
-			path:'/team/dragon',
-			name:'team_dragon',
-			component:team_dragon
-		},{
-			path:'/team/baron',
-			name:'team_baron',
-			component:team_baron
+	}, {
+		path: '/team',
+		name: 'team',
+		component: team,
+		children: [{
+			path: '/team/win',
+			name: 'team_win',
+			component: team_win
+		}, {
+			path: '/team/kill',
+			name: 'team_kill',
+			component: team_kill
+		}, {
+			path: '/team/death',
+			name: 'team_death',
+			component: team_death
+		}, {
+			path: '/team/eyes',
+			name: 'team_eyes',
+			component: team_eyes
+		}, {
+			path: '/team/killeyes',
+			name: 'team_killeyes',
+			component: team_killeyes
+		}, {
+			path: '/team/earn',
+			name: 'team_earn',
+			component: team_earn
+		}, {
+			path: '/team/dragon',
+			name: 'team_dragon',
+			component: team_dragon
+		}, {
+			path: '/team/baron',
+			name: 'team_baron',
+			component: team_baron
 		}]
 	}]
 })

@@ -58,11 +58,12 @@
 </template>
 
 <script>
+	
 	export default {
 		name: 'App',
 		data() {
 			return {
-				imgURL: '/static/logo.png'
+				imgURL:'/static/logo.png'
 			}
 		},
 		methods:{
